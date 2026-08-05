@@ -982,7 +982,7 @@ static void butchery_drops_harvest( item *corpse_item, const mtype &mt, player &
                                             corpse_item->has_flag( flag_FIELD_DRESS_FAILED ) || corpse_item->has_flag( flag_QUARTERED );
         const bool already_harvested = ( corpse_item->has_flag( flag_SKINNED ) && entry.type == "skin" ) ||
                                        ( has_any_field_dressing && entry.type == "offal" ) || ( ( has_any_field_dressing ||
-                                               corpse_item->has_flag( flag_BLED ) || action != BLEED ) && entry.type == "blood" );
+                                           corpse_item->has_flag( flag_BLED ) || action != BLEED ) && entry.type == "blood" );
         if( already_harvested ) {
             roll = 0;
         }
@@ -1554,7 +1554,7 @@ void activity_handlers::fill_liquid_do_turn( player_activity *act, player *p )
         // 1. Prepare source lambda
         liquid_source_type source_type = static_cast<liquid_source_type>( act_ref.values.at( 0 ) );
         auto transfer = [source_type, &here,
-                     &act_ref]( const std::function < detached_ptr<item>( detached_ptr<item> &&it ) > & cb ) {
+        &act_ref]( const std::function < detached_ptr<item>( detached_ptr<item> &&it ) > & cb ) {
             auto pos = act_ref.coords.at( 0 );
             static const units::volume volume_per_second = units::from_liter( 4.0F / 6.0F );
             int charges;
@@ -1820,7 +1820,7 @@ void activity_handlers::make_zlave_finish( player_activity *act, player *p )
     const std::string corpse_name = act->str_values[0];
     item *body = nullptr;
 
-    for( item *&it : items ) {
+    for( item * &it : items ) {
         if( it->display_name() == corpse_name ) {
             body = it;
         }
@@ -1934,7 +1934,7 @@ void activity_handlers::pickaxe_finish( player_activity *act, player *p )
         debugmsg( "pickaxe activity has no tool" );
     }
     if( resume_for_multi_activities( *p ) ) {
-        for( item *&elem : here.i_at( pos ) ) {
+        for( item * &elem : here.i_at( pos ) ) {
             elem->set_var( "activity_var", p->name );
         }
     }
@@ -1968,7 +1968,7 @@ void activity_handlers::pulp_do_turn( player_activity *act, player *p )
     // use this to collect how many corpse are pulped
     int &num_corpses = act->index;
     map_stack corpse_pile = here.i_at( pos );
-    for( item *&corpse : corpse_pile ) {
+    for( item * &corpse : corpse_pile ) {
         const mtype *corpse_mtype = corpse->get_mtype();
         if( !corpse->is_corpse() || ( !corpse_mtype->has_flag( MF_REVIVES ) &&
                                       !corpse_mtype->zombify_into ) ||
@@ -2878,6 +2878,7 @@ void activity_handlers::repair_item_finish( player_activity *act, player *p )
         const bool destroyed = attempt == repair_item_actor::AS_DESTROYED;
         const bool cannot_continue_repair = attempt == repair_item_actor::AS_CANT ||
                                             destroyed || !actor->can_repair_target( *p, *fix_location, !destroyed );
+        const bool fully_repaired = !destroyed && fix_location->damage() <= 0;
         if( cannot_continue_repair ) {
             // Cannot continue to repair target, select another target.
             // **Warning**: as soon as the item is popped back, it is destroyed and can't be used anymore!
@@ -2891,7 +2892,7 @@ void activity_handlers::repair_item_finish( player_activity *act, player *p )
         const bool need_input =
             ( repeat == REPEAT_ONCE ) ||
             ( repeat == REPEAT_EVENT && event_happened ) ||
-            ( repeat == REPEAT_FULL && ( cannot_continue_repair || fix_location->damage() <= 0 ) );
+            ( repeat == REPEAT_FULL && ( cannot_continue_repair || fully_repaired ) );
         if( need_input ) {
             repeat = REPEAT_INIT;
         }
@@ -3046,17 +3047,17 @@ void activity_handlers::mend_item_finish( player_activity *act, player *p )
     const auto mend = [&]( item * target ) -> void {
         target->faults.erase( *f );
         if( method->turns_into )
-        {
-            target->faults.emplace( *method->turns_into );
+    {
+        target->faults.emplace( *method->turns_into );
         }
         // also_mends removes not just the fault picked to be mended, but this as well.
         if( method->also_mends )
-        {
-            target->faults.erase( *method->also_mends );
+    {
+        target->faults.erase( *method->also_mends );
         }
         if( act->name == "fault_gun_blackpowder" || act->name == "fault_gun_dirt" )
-        {
-            target->set_var( "dirt", 0 );
+    {
+        target->set_var( "dirt", 0 );
         }
         add_msg( m_good, method->success_msg.translated(), target->tname() );
     };
@@ -3267,7 +3268,7 @@ static void rod_fish( player *p,
     const std::pair<std::string, int> *caught = fishables.pick();
     if( caught->first.contains( "fish" ) ) {
         const std::vector<mtype_id> fish_group = MonsterGroupManager::GetMonstersFromGroup(
-                    mongroup_id( "GROUP_FISH" ) );
+                mongroup_id( "GROUP_FISH" ) );
         const mtype_id fish_mon = random_entry_ref( fish_group );
         here.add_item_or_charges(
             p->bub_pos(), item::make_corpse( fish_mon, calendar::turn +
@@ -3284,7 +3285,7 @@ static void rod_fish( player *p,
         }
     }
 
-    for( item *&elem : here.i_at( p->bub_pos() ) ) {
+    for( item * &elem : here.i_at( p->bub_pos() ) ) {
         if( elem->is_corpse() && !elem->has_var( "activity_var" ) ) {
             elem->set_var( "activity_var", p->name );
         }
@@ -3746,9 +3747,9 @@ void activity_handlers::operation_finish( player_activity *act, player *p )
             add_msg( m_good,
                      _( "The Autodoc returns to its resting position after successfully performing the operation." ) );
             const std::list<tripoint_bub_ms> autodocs = here.find_furnitures_or_vparts_with_flag_in_radius(
-                        p->bub_pos(),
-                        1,
-                        flag_AUTODOC );
+                    p->bub_pos(),
+                    1,
+                    flag_AUTODOC );
             sound_event se;
             se.origin = autodocs.front();
             se.volume = 60;
@@ -3763,9 +3764,9 @@ void activity_handlers::operation_finish( player_activity *act, player *p )
                 add_msg( m_warning,
                          _( "The Autodoc completes installation and activates bionic but reports about complications during operation." ) );
                 const std::list<tripoint_bub_ms> autodocs = here.find_furnitures_or_vparts_with_flag_in_radius(
-                            p->bub_pos(),
-                            1,
-                            flag_AUTODOC );
+                        p->bub_pos(),
+                        1,
+                        flag_AUTODOC );
                 sound_event se;
                 se.origin = autodocs.front();
                 se.volume = 60;
@@ -3780,9 +3781,9 @@ void activity_handlers::operation_finish( player_activity *act, player *p )
                 add_msg( m_bad,
                          _( "The Autodoc jerks back to its resting position after failing the operation." ) );
                 const std::list<tripoint_bub_ms> autodocs = here.find_furnitures_or_vparts_with_flag_in_radius(
-                            p->bub_pos(),
-                            1,
-                            flag_AUTODOC );
+                        p->bub_pos(),
+                        1,
+                        flag_AUTODOC );
                 sound_event se;
                 se.origin = autodocs.front();
                 se.volume = 60;
@@ -4329,7 +4330,7 @@ void activity_handlers::jackhammer_finish( player_activity *act, player *p )
         debugmsg( "unable to find tool" );
     }
     if( resume_for_multi_activities( *p ) ) {
-        for( item *&elem : here.i_at( pos ) ) {
+        for( item * &elem : here.i_at( pos ) ) {
             elem->set_var( "activity_var", p->name );
         }
     }
@@ -4537,8 +4538,8 @@ void activity_handlers::fertilize_plot_do_turn( player_activity *act, player *p 
     itype_id fertilizer;
     auto check_fertilizer = [&]( bool ask_user = true ) -> void {
         if( act->str_values.empty() )
-        {
-            act->str_values.emplace_back( "" );
+    {
+        act->str_values.emplace_back( "" );
         }
         fertilizer = itype_id( act->str_values[0] );
 
@@ -4546,7 +4547,7 @@ void activity_handlers::fertilize_plot_do_turn( player_activity *act, player *p 
         if( ask_user && ( fertilizer.is_empty() || !p->has_charges( fertilizer, 1 ) ) )
         {
             fertilizer = iexamine::choose_fertilizer( *p, "plant",
-                    false /* Don't confirm action with player */ );
+                false /* Don't confirm action with player */ );
             act->str_values[0] = fertilizer.str();
         }
     };
@@ -4774,8 +4775,8 @@ void activity_handlers::spellcasting_finish( player_activity *act, player *p )
         do {
             avatar &you = *p->as_avatar();
             std::vector<tripoint_bub_ms> trajectory = target_handler::mode_spell( you, spell_being_cast,
-                    no_fail,
-                    no_mana );
+                no_fail,
+                no_mana );
             g->refresh_player_visibility_cache_if_needed();
 
             if( !trajectory.empty() ) {
@@ -4792,7 +4793,7 @@ void activity_handlers::spellcasting_finish( player_activity *act, player *p )
         } while( !target_is_valid );
     } else if( spell_being_cast.has_flag( RANDOM_TARGET ) ) {
         const std::optional<tripoint_bub_ms> target_ = spell_being_cast.random_valid_target( *p,
-                p->bub_pos() );
+            p->bub_pos() );
         if( !target_ ) {
             p->add_msg_if_player( game_message_params{ m_bad, gmf_bypass_cooldown },
                                   _( "Your spell can't find a suitable target." ) );
