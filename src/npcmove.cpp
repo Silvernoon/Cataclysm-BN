@@ -1424,6 +1424,7 @@ void npc::execute_action( npc_action action )
             // Important, once they've fired their gun, wield calculations have to be redone
             // else they'll fail to realize when they run out of ammo.
             clear_npc_ai_info_cache( npc_ai_info::range );
+            clear_npc_ai_info_cache( npc_ai_info::reloadables );
             break;
         }
 
@@ -5071,6 +5072,7 @@ void npc::do_reload( item &it )
     has_new_items = true;
     // Reloading clears mode choice.
     clear_npc_ai_info_cache( npc_ai_info::range );
+    clear_npc_ai_info_cache( npc_ai_info::reloadables );
 }
 
 bool npc::adjust_worn()

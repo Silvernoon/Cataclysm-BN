@@ -924,7 +924,11 @@ item_reload_option select_ammo( const player &who, item &base,
     }
 
     if( who.is_npc() ) {
-        return opts[ 0 ];
+        const auto best = std::ranges::max_element( opts, []( const item_reload_option & lhs,
+        const item_reload_option & rhs ) {
+            return lhs.ammo->ammo_remaining() < rhs.ammo->ammo_remaining();
+        } );
+        return *best;
     }
 
     uilist menu;
@@ -980,13 +984,13 @@ item_reload_option select_ammo( const player &who, item &base,
 
     // Pads elements to match longest member and return length
     auto pad = []( std::vector<std::string> &vec, int n, int t ) -> int {
-        for( const auto &e : vec )
-        {
-            n = std::max( n, utf8_width( e, true ) + t );
+for( const auto &e : vec )
+    {
+        n = std::max( n, utf8_width( e, true ) + t );
         }
-        for( auto &e : vec )
-        {
-            e += std::string( n - utf8_width( e, true ), ' ' );
+for( auto &e : vec )
+    {
+        e += std::string( n - utf8_width( e, true ), ' ' );
         }
         return n;
     };
@@ -1160,8 +1164,8 @@ item_reload_option select_ammo( const player &who, item &base,
 
     const item *sel = opts[ menu.ret ].ammo;
     uistate.lastreload[ ammotype( base.ammo_default().str() ) ] = sel->is_ammo_container() ?
-            sel->contents.front().typeId() :
-            sel->typeId();
+        sel->contents.front().typeId() :
+        sel->typeId();
     return opts[ menu.ret ];
 }
 
