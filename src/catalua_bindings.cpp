@@ -633,6 +633,15 @@ void cata::detail::reg_hooks_examples( sol::state &lua )
     DOC_PARAMS( "params" );
     luna::set_fx( lib, "on_npc_interaction", []( const sol::table & ) {} );
 
+    DOC( "Called when an NPC is about to warn about a threat or condition.  " );
+    DOC( "The hook receives a table with keys:  " );
+    DOC( "* `npc` (Npc): The NPC speaking  " );
+    DOC( "* `warning_type` (string): The warning category  " );
+    DOC( "* `speech` (string): The default speech text  " );
+    DOC( "Set `params.results.speech` to replace the speech text.  " );
+    DOC_PARAMS( "params" );
+    luna::set_fx( lib, "on_npc_warning", []( const sol::table & ) {} );
+
     DOC( "Called when the player tries to interact with a monster.  " );
     DOC( "The hook receives a table with keys:  " );
     DOC( "* `monster` (Monster): The monster being interacted with  " );

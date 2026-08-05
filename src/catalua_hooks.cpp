@@ -4,8 +4,7 @@
 namespace cata
 {
 
-constexpr auto hook_names = std::array
-{
+constexpr auto hook_names = std::array {
     "on_character_death",
     "on_character_display_skill_action",
     "on_character_display_skill_info",
@@ -51,6 +50,7 @@ constexpr auto hook_names = std::array
     "on_npc_interaction",
     "on_npc_loaded",
     "on_npc_spawn",
+    "on_npc_warning",
     "on_npc_try_move",
     "on_player_try_move",
     "on_shoot",

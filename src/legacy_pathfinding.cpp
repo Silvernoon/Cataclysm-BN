@@ -90,7 +90,7 @@ struct pathfinder {
     }
 
     std::priority_queue<std::pair<int, tripoint_abs_ms>, std::vector< std::pair<int, tripoint_abs_ms>>, pair_greater_cmp_first>
-            open;
+    open;
     std::array< std::unique_ptr<path_data_layer>, OVERMAP_LAYERS > path_data;
 
     path_data_layer &get_layer( const int z ) {
@@ -250,6 +250,46 @@ auto get_legacy_pathfinding_tile( const map &here,
         .vehicle_part = vehicle_part,
         .move_cost = here.move_cost_internal( furniture, terrain, vehicle, vehicle_part ),
     };
+}
+
+struct rope_ladder_endpoints {
+    tripoint_abs_ms top;
+    tripoint_abs_ms bottom;
+};
+
+auto get_rope_ladder_endpoints( const map &here,
+                                const tripoint_abs_ms &current ) -> std::optional<rope_ladder_endpoints>
+{
+    const auto current_bub = abs_to_map_local( here, current );
+    if( !here.has_rope_at( current_bub ) ) {
+        return std::nullopt;
+    }
+
+    const auto [veh, ladder_part] = here.get_rope_at( current_bub );
+    const auto top = veh->abs_part_location( ladder_part );
+    const auto ladder_length = veh->part( ladder_part ).info().ladder_length();
+    const auto top_tile = get_legacy_pathfinding_tile( here, top );
+    if( ladder_length <= 0 || !top_tile || top_tile->terrain != t_open_air ) {
+        return std::nullopt;
+    }
+
+    auto bottom = top;
+    const auto lowest_z = top.z() - ladder_length;
+    while( bottom.z() > lowest_z ) {
+        bottom.z()--;
+        const auto tile = get_legacy_pathfinding_tile( here, bottom );
+        if( !tile ) {
+            return std::nullopt;
+        }
+        if( tile->terrain != t_open_air ) {
+            return rope_ladder_endpoints {
+                .top = top,
+                .bottom = bottom,
+            };
+        }
+    }
+
+    return std::nullopt;
 }
 
 auto get_pf_special_from_tile( const legacy_pathfinding_tile &tile ) -> pf_special
@@ -577,14 +617,16 @@ std::vector<tripoint_abs_ms> map::route( const tripoint_abs_ms &f, const tripoin
             }
         }
 
-        if( !( cur_special & PF_UPDOWN ) || !settings.allow_climb_stairs ) {
+        if( !settings.allow_climb_stairs ) {
             // The part below is only for z-level pathing
             continue;
         }
 
-        if( !cur_tile ) {
+        const auto rope_endpoints = get_rope_ladder_endpoints( *this, cur );
+        if( !( cur_special & PF_UPDOWN ) && !rope_endpoints ) {
             continue;
         }
+
         const auto &parent_terrain = cur_tile->terrain.obj();
         if( settings.allow_climb_stairs && cur.z() > min.z() &&
             parent_terrain.has_flag( TFLAG_GOES_DOWN ) ) {
@@ -638,6 +680,17 @@ std::vector<tripoint_abs_ms> map::route( const tripoint_abs_ms &f, const tripoin
                               cur, below );
             }
         }
+        if( rope_endpoints &&
+            ( cur == rope_endpoints->top || cur == rope_endpoints->bottom ) ) {
+            const auto destination = cur == rope_endpoints->top ? rope_endpoints->bottom :
+                                     rope_endpoints->top;
+            if( destination.z() >= min.z() && destination.z() <= max.z() ) {
+                const auto rope_cost = 2 * std::abs( destination.z() - cur.z() );
+                pf.add_point( layer.gscore[parent_index] + rope_cost,
+                              layer.score[parent_index] + rope_cost + 2 * rl_dist( destination, t ),
+                              cur, destination );
+            }
+        }
 
     } while( !done && !pf.empty() );
 
@@ -654,9 +707,12 @@ std::vector<tripoint_abs_ms> map::route( const tripoint_abs_ms &f, const tripoin
             }
 
             ret.push_back( cur );
-            // Jumps are acceptable on 1 z-level changes
-            // This is because stairs teleport the player too
-            if( rl_dist( cur, par ) > 1 && std::abs( cur.z() - par.z() ) != 1 ) {
+            // Jumps are acceptable when stairs or a rope ladder connect the z-levels.
+            const auto rope_endpoints = get_rope_ladder_endpoints( *this, cur );
+            const auto rope_transition = rope_endpoints &&
+                                         ( ( cur == rope_endpoints->top && par == rope_endpoints->bottom ) ||
+                                           ( cur == rope_endpoints->bottom && par == rope_endpoints->top ) );
+            if( rl_dist( cur, par ) > 1 && std::abs( cur.z() - par.z() ) != 1 && !rope_transition ) {
                 debugmsg( "Jump in our route!  %d:%d:%d->%d:%d:%d",
                           cur.x(), cur.y(), cur.z(), par.x(), par.y(), par.z() );
                 return ret;
