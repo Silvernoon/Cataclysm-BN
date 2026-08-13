@@ -1,0 +1,12 @@
+[
+  {
+    "type": "profession",
+    "id": "tactical_npc_ai_maid_start",
+    "copy-from": "unemployed",
+    "name": "Survivor with a Maid",
+    "description": "You survived the Cataclysm with a household maid who refused to leave you behind.",
+    "points": 0,
+    "flags": [ "SCEN_ONLY" ],
+    "npcs": [ "NC_TACTICAL_NPC_AI_MAID" ]
+  }
+]

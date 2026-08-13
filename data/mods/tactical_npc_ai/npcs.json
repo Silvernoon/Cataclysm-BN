@@ -1,0 +1,62 @@
+[
+  {
+    "type": "npc_class",
+    "id": "NC_TACTICAL_NPC_AI_MAID",
+    "name": "Maid",
+    "job_description": "I served a household before the Cataclysm.",
+    "common": false,
+    "traits": [
+      { "group": "NPC_starting_traits" },
+      [ "TACTICAL_NPC_AI_MAID", 100 ]
+    ],
+    "worn_override": "NC_TACTICAL_NPC_AI_MAID_worn",
+    "carry_override": "NC_TACTICAL_NPC_AI_MAID_carried",
+    "weapon_override": "NC_TACTICAL_NPC_AI_MAID_weapon",
+    "lua_ai": "tactical_npc_ai_maid",
+    "skills": [
+      { "skill": "cooking", "bonus": { "rng": [ 4, 6 ] } },
+      { "skill": "firstaid", "bonus": { "rng": [ 5, 7 ] } },
+      { "skill": "dodge", "bonus": { "rng": [ 5, 7 ] } },
+      { "skill": "melee", "bonus": { "rng": [ 5, 7 ] } },
+      { "skill": "cutting", "bonus": { "rng": [ 5, 7 ] } },
+      { "skill": "gun", "bonus": { "rng": [ 8, 10 ] } },
+      { "skill": "rifle", "bonus": { "rng": [ 8, 10 ] } },
+      { "skill": "speech", "bonus": { "rng": [ 3, 5 ] } }
+    ]
+  },
+  {
+    "type": "item_group",
+    "id": "NC_TACTICAL_NPC_AI_MAID_worn",
+    "subtype": "collection",
+    "entries": [
+      { "item": "maid_dress" },
+      { "item": "maid_hat" },
+      { "item": "stockings" },
+      { "item": "modularvestceramic", "contents-group": "army_mags_m4" },
+      { "item": "tac_helmet" },
+      { "item": "gloves_tactical" },
+      { "item": "boots_combat" },
+      { "item": "knife_combat", "container-item": "bootsheath" }
+    ]
+  },
+  {
+    "type": "item_group",
+    "id": "NC_TACTICAL_NPC_AI_MAID_carried",
+    "subtype": "collection",
+    "entries": [
+      { "item": "rag", "count": [ 2, 4 ] },
+      { "item": "water_clean", "container-item": "bottle_plastic" },
+      { "item": "lighter", "charges": 25 },
+      { "item": "ear_plugs", "custom-flags": [ "no_auto_equip" ] },
+      { "item": "stanag30", "ammo-item": "556", "charges": 30 }
+    ]
+  },
+  {
+    "type": "item_group",
+    "id": "NC_TACTICAL_NPC_AI_MAID_weapon",
+    "subtype": "collection",
+    "entries": [
+      { "item": "m4a1", "ammo-item": "556", "charges": 30, "contents-item": [ "shoulder_strap", "holo_sight", "suppressor" ] }
+    ]
+  }
+]

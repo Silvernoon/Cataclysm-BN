@@ -1,0 +1,121 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tactical_npc_ai\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Chinese (Simplified)\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: modinfo.json
+msgid "Tactical NPC AI"
+msgstr "战术 NPC AI"
+
+#: modinfo.json
+msgid "Adds tactical follower regrouping and the Maid's Promise start with a female NPC companion."
+msgstr "加入战术追随者重组功能，以及带有女性 NPC 同伴的“女仆的承诺”开局。"
+
+#: npcs.json
+msgid "Maid"
+msgstr "女仆"
+
+#: npcs.json
+msgid "I served a household before the Cataclysm."
+msgstr "灾变前我曾在一个家庭中服侍。"
+
+#: traits.json
+msgid "Maid companion marker"
+msgstr "女仆同伴标记"
+
+#: traits.json
+msgid "Internal marker for the Tactical NPC AI maid companion."
+msgstr "战术 NPC AI 女仆同伴使用的内部标记。"
+
+#: dialogue.json
+msgid "Good day. I served in a household before the Cataclysm. I shall remain at your side and assist you to the best of my ability."
+msgstr "日安。我在灾变前曾侍奉一个家庭。我会留在您身边，尽我所能协助您。"
+
+#: dialogue.json
+msgid "What duties can you perform?"
+msgstr "您能做些什么？"
+
+#: dialogue.json
+msgid "Are you all right?"
+msgstr "您还好吗？"
+
+#: dialogue.json
+msgid "Please stay close to me."
+msgstr "请跟紧我。"
+
+#: dialogue.json
+msgid "Let us continue."
+msgstr "我们继续吧。"
+
+#: dialogue.json
+msgid "I am capable of preparing meals, tending to minor wounds, maintaining our supplies, and carrying out practical tasks. Please give me your instructions, and I shall do my utmost to fulfill them."
+msgstr "我能够准备食物、处理轻伤、维护物资并完成实用任务。请下达指示，我会尽最大努力完成。"
+
+#: dialogue.json
+msgid "Thank you."
+msgstr "谢谢。"
+
+#: dialogue.json
+msgid "I confess that these circumstances are unsettling. Nevertheless, I shall remain close to you and follow your instructions. You need not be concerned on my account."
+msgstr "我承认这些处境令人不安。不过，我会留在您身边并听从您的指示。您无需担心我。"
+
+#: dialogue.json
+msgid "Very well. Stay with me."
+msgstr "很好。跟紧我。"
+
+#: dialogue.json
+msgid "We will manage this together."
+msgstr "我们会一起渡过难关。"
+
+#: professions.json
+msgctxt "profession_male"
+msgid "Survivor with a Maid"
+msgstr "与女仆同行的幸存者"
+
+#: professions.json
+msgctxt "profession_female"
+msgid "Survivor with a Maid"
+msgstr "与女仆同行的幸存者"
+
+#: professions.json
+msgctxt "prof_desc_male"
+msgid "You survived the Cataclysm with a household maid who refused to leave you behind."
+msgstr "你和一名不愿丢下你的女仆一起在灾变中活了下来。"
+
+#: professions.json
+msgctxt "prof_desc_female"
+msgid "You survived the Cataclysm with a household maid who refused to leave you behind."
+msgstr "你和一名不愿丢下你的女仆一起在灾变中活了下来。"
+
+#: scenarios.json
+msgctxt "scenario_male"
+msgid "Maid's Promise"
+msgstr "女仆的承诺"
+
+#: scenarios.json
+msgctxt "scenario_female"
+msgid "Maid's Promise"
+msgstr "女仆的承诺"
+
+#: scenarios.json
+msgctxt "scen_desc_male"
+msgid "You survived the first days of the Cataclysm with a capable maid who chose to stay by your side."
+msgstr "你和一名有能力的女仆一起熬过了灾变最初的日子，她选择留在你身边。"
+
+#: scenarios.json
+msgctxt "scen_desc_female"
+msgid "You survived the first days of the Cataclysm with a capable maid who chose to stay by your side."
+msgstr "你和一名有能力的女仆一起熬过了灾变最初的日子，她选择留在你身边。"
+
+#: scenarios.json
+msgctxt "start_name"
+msgid "Evac Shelter"
+msgstr "疏散避难所"

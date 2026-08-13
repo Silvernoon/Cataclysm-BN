@@ -1,0 +1,31 @@
+[
+  {
+    "type": "talk_topic",
+    "id": "TALK_TACTICAL_NPC_AI_MAID_GREETING",
+    "dynamic_line": "Good day. I served in a household before the Cataclysm. I shall remain at your side and assist you to the best of my ability.",
+    "responses": [
+      { "text": "What duties can you perform?", "topic": "TALK_TACTICAL_NPC_AI_MAID_DUTIES" },
+      { "text": "Are you all right?", "topic": "TALK_TACTICAL_NPC_AI_MAID_REASSURANCE" },
+      { "text": "Please stay close to me.", "topic": "TALK_FRIEND" },
+      { "text": "Let us continue.", "topic": "TALK_FRIEND" }
+    ]
+  },
+  {
+    "type": "talk_topic",
+    "id": "TALK_TACTICAL_NPC_AI_MAID_DUTIES",
+    "dynamic_line": "I am capable of preparing meals, tending to minor wounds, maintaining our supplies, and carrying out practical tasks. Please give me your instructions, and I shall do my utmost to fulfill them.",
+    "responses": [
+      { "text": "Thank you.", "topic": "TALK_FRIEND" },
+      { "text": "Are you all right?", "topic": "TALK_TACTICAL_NPC_AI_MAID_REASSURANCE" }
+    ]
+  },
+  {
+    "type": "talk_topic",
+    "id": "TALK_TACTICAL_NPC_AI_MAID_REASSURANCE",
+    "dynamic_line": "I confess that these circumstances are unsettling. Nevertheless, I shall remain close to you and follow your instructions. You need not be concerned on my account.",
+    "responses": [
+      { "text": "Very well. Stay with me.", "topic": "TALK_FRIEND" },
+      { "text": "We will manage this together.", "topic": "TALK_FRIEND" }
+    ]
+  }
+]

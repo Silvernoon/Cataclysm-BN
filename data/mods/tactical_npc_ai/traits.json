@@ -1,0 +1,12 @@
+[
+  {
+    "type": "mutation",
+    "id": "TACTICAL_NPC_AI_MAID",
+    "name": "Maid companion marker",
+    "points": 0,
+    "description": "Internal marker for the Tactical NPC AI maid companion.",
+    "valid": false,
+    "purifiable": false,
+    "player_display": false
+  }
+]

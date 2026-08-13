@@ -1,0 +1,13 @@
+[
+  {
+    "type": "scenario",
+    "id": "tactical_npc_ai_maid_start",
+    "name": "Maid's Promise",
+    "points": 0,
+    "description": "You survived the first days of the Cataclysm with a capable maid who chose to stay by your side.",
+    "allowed_locs": [ "sloc_shelter", "sloc_shelter_vandalized" ],
+    "professions": [ "tactical_npc_ai_maid_start" ],
+    "start_name": "Evac Shelter",
+    "flags": [ "CITY_START", "LONE_START" ]
+  }
+]

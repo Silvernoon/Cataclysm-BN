@@ -1,0 +1,151 @@
+[
+  {
+    "type": "effect_type",
+    "id": "endless_chest_cast",
+    "name": [ "Endless Chest" ],
+    "desc": [ "Space is folding around you." ],
+    "flags": [ "EFFECT_LUA_ON_ADDED" ]
+  },
+  {
+    "type": "effect_type",
+    "id": "endless_chest_cast_v2",
+    "name": [ "Endless Chest" ],
+    "desc": [ "Space is folding around you." ],
+    "flags": [ "EFFECT_LUA_ON_ADDED" ]
+  },
+  {
+    "type": "SPELL",
+    "id": "endless_chest_spell",
+    "name": { "str": "Endless Chest" },
+    "description": "Fold space to enter a hidden vault containing an effectively bottomless chest.  Cast it again from inside the vault to return to the exact place you left.",
+    "message": "You trace a violet doorway in the air.  %s!",
+    "valid_targets": [ "self" ],
+    "effect": "target_attack",
+    "effect_str": "endless_chest_cast_v2",
+    "energy_source": "NONE",
+    "skill": "survival",
+    "difficulty": 0,
+    "max_level": 0,
+    "base_casting_time": 100,
+    "base_energy_cost": 0,
+    "min_duration": 100,
+    "max_duration": 100,
+    "flags": [ "NO_EXPLOSION_VFX", "SILENT", "NO_HANDS", "NO_LEGS", "NO_FAIL" ],
+    "spell_class": "NONE"
+  },
+  {
+    "type": "GENERIC",
+    "id": "endless_chest_scroll",
+    "category": "spellbooks",
+    "name": { "str": "scroll of the endless chest", "str_pl": "scrolls of the endless chest" },
+    "description": "A sheet of black parchment covered in shifting violet geometry.  Activate it to learn the Endless Chest spell.  Once learned, use the spellcasting command to enter or leave your hidden vault.",
+    "weight": "5 g",
+    "volume": "5 ml",
+    "price": "0 cent",
+    "price_postapoc": "0 cent",
+    "material": [ "paper" ],
+    "symbol": "?",
+    "color": "magenta",
+    "looks_like": "scroll_teleport",
+    "flags": [ "NO_SALVAGE", "TRADER_AVOID" ],
+    "use_action": { "type": "learn_spell", "spells": [ "endless_chest_spell" ] }
+  },
+  {
+    "type": "ARMOR",
+    "id": "endless_chest_anchor",
+    "name": { "str": "faded endless chest bond" },
+    "description": "A faded dimensional bond left behind by an older version of the Endless Chest spell.  Its destination metadata is no longer reliable; it can be safely removed.",
+    "weight": "1 g",
+    "volume": "1 ml",
+    "price": "0 cent",
+    "price_postapoc": "0 cent",
+    "material": [ "stone" ],
+    "symbol": ":",
+    "color": "dark_gray",
+    "flags": [ "NO_SALVAGE", "TRADER_AVOID" ]
+  },
+  {
+    "type": "ARMOR",
+    "id": "endless_chest_anchor_v2",
+    "name": { "str": "faded endless chest bond" },
+    "description": "A faded dimensional bond left behind by an older version of the Endless Chest spell.  The current spell no longer requires a physical bond; this can be safely removed.",
+    "weight": "1 g",
+    "volume": "1 ml",
+    "price": "0 cent",
+    "price_postapoc": "0 cent",
+    "material": [ "stone" ],
+    "symbol": ":",
+    "color": "dark_gray",
+    "flags": [ "NO_SALVAGE", "TRADER_AVOID" ]
+  },
+  {
+    "type": "furniture",
+    "id": "f_endless_chest",
+    "name": "endless chest",
+    "description": "A black chest traced with violet light.  Its open interior contains neither darkness nor a bottom, only impossible distance.",
+    "symbol": "O",
+    "color": "magenta",
+    "looks_like": "f_chest",
+    "move_cost_mod": -1,
+    "coverage": 60,
+    "required_str": -1,
+    "max_volume": "1000000 L",
+    "flags": [ "TRANSPARENT", "CONTAINER", "PLACE_ITEM", "BLOCKSDOOR" ],
+    "bash": {
+      "str_min": -1,
+      "str_max": -1,
+      "sound": "The chest ripples, but remains untouched.",
+      "sound_fail": "The chest ripples, but remains untouched."
+    }
+  },
+  {
+    "type": "furniture",
+    "id": "f_endless_chest_return",
+    "name": "return sigil",
+    "description": "A violet sigil anchored to the floor.  Examine it to leave the endless chest and return to the place from which you entered.",
+    "symbol": "<",
+    "color": "magenta",
+    "move_cost_mod": 0,
+    "coverage": 0,
+    "required_str": -1,
+    "flags": [ "TRANSPARENT" ],
+    "examine_action": "lua:EXIT_ENDLESS_CHEST"
+  },
+  {
+    "type": "overmap_terrain",
+    "id": "portable_infinite_space_vault",
+    "name": "endless chest",
+    "sym": "O",
+    "color": "magenta",
+    "see_cost": 0,
+    "flags": [ "NO_ROTATE", "SOURCE_SAFETY" ]
+  },
+  {
+    "type": "overmap_special",
+    "id": "portable_infinite_space_vault",
+    "overmaps": [ { "point": [ 0, 0, 0 ], "overmap": "portable_infinite_space_vault" } ],
+    "locations": [ "land" ],
+    "occurrences": [ 0, 0 ],
+    "rotate": false
+  },
+  {
+    "type": "mapgen",
+    "method": "json",
+    "om_terrain": "portable_infinite_space_vault",
+    "weight": 100,
+    "object": {
+      "fill_ter": "t_rock_floor",
+      "place_furniture": [ { "furn": "f_endless_chest", "x": 13, "y": 12 }, { "furn": "f_endless_chest_return", "x": 13, "y": 13 } ]
+    }
+  },
+  {
+    "type": "recipe",
+    "result": "endless_chest_sigil",
+    "obsolete": true
+  },
+  {
+    "type": "MIGRATION",
+    "id": "endless_chest_sigil",
+    "replace": "endless_chest_scroll"
+  }
+]
